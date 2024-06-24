@@ -40,23 +40,24 @@ void createProject(String projectName, String host, int port, String oydaBase, S
 }
 
 String _mainContent(String projectName) => '''
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:oydadb/src/oyda_interface.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: ".env");
-  var table = await OydaInterface().selectTable('test');
-  print(table);
-  runApp(const MyApp());
-}
+//   await dotenv.load(fileName: ".env");
+//   var table = await OydaInterface().selectTable('test');
+//   print(table);
+//   runApp(const MyApp());
+// }
 ''';
 
 String _widgetTestContent(String projectName) => '''
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import '../oydadb/src/oyda_interface.dart';
+import 'package:oydadb/src/oyda_interface.dart';
 
 void main() async {
   group('OYDAInterface', () {
@@ -87,6 +88,7 @@ dependencies:
     sdk: flutter
   flutter_dotenv: ^5.1.0
   http: ^1.2.1
+  oydadb: ^1.0.3
 
 dev_dependencies:
   flutter_test:
