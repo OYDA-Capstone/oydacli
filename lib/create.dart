@@ -1,7 +1,27 @@
 import 'dart:io';
 import 'utilities.dart';
 
-void createProject(String projectName, String host, int port, String oydaBase, String user, String password) async {
+/// Creates a new Oyda project with the given parameters.
+///
+/// The [projectName] is the name of the project to be created.
+/// The [host] is the host address of the oydabase.
+/// The [port] is the port number of the oydabase.
+/// The [oydaBase] is the name of the oydabase.
+/// The [user] is the username for authentication.
+/// The [password] is the password for authentication.
+///
+/// This function connects to the oydabase using the provided parameters.
+/// If the connection is successful, it creates a new directory with the [projectName].
+/// Inside the project directory, it creates the necessary subdirectories and files
+/// for an Oyda project, including 'lib/main.dart', 'test/widget_test.dart',
+/// 'README.md', and '.env' files.
+/// It also sets the 'pubspec.yaml' file to read-only.
+///
+/// If the connection to the oydabase fails or the project directory already exists,
+/// appropriate error messages are printed and the function returns.
+///
+/// After successfully creating the project, a success message is printed.
+Future<void> createProject(String projectName, String host, int port, String oydaBase, String user, String password) async {
   final bool isConnected = await setOydabase(host, port, oydaBase, user, password);
 
   if (!isConnected) {
@@ -39,6 +59,9 @@ void createProject(String projectName, String host, int port, String oydaBase, S
   print('Project $projectName created successfully.');
 }
 
+/// Returns the main content as a string for the given project name.
+///
+/// The main content includes import statements, the main function, and the runApp() function.
 String _mainContent(String projectName) => '''
 // import 'package:flutter/material.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -54,6 +77,9 @@ String _mainContent(String projectName) => '''
 // }
 ''';
 
+/// Returns the widget test content as a string for the given project name.
+///
+/// The widget test content includes import statements, the main test function, and a test case.
 String _widgetTestContent(String projectName) => '''
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -72,10 +98,13 @@ void main() async {
 }
 ''';
 
+/// Returns the pubspec.yaml content as a string for the given project name.
+///
+/// The pubspec.yaml content includes project metadata, dependencies, and dev dependencies.
 String _pubspecContent(String projectName) => '''
 ### THIS FILE IS READ-ONLY. To update project dependencies, use the 'oyda update' command. ###
 
-name: testproj
+name: $projectName
 description: A new Oyda project.
 version: 1.0.0+1
 
@@ -101,6 +130,9 @@ flutter:
 
 ''';
 
+/// Returns the .env file content as a string for the given host, port, OYDA base, user, and password.
+///
+/// The .env file content includes environment variable assignments for host, port, OYDA base, user, and password.
 String _envContent(String host, int port, String oydaBase, String user, String password) {
   return '''
 HOST=$host

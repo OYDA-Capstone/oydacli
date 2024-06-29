@@ -3,8 +3,20 @@
 import 'package:args/args.dart';
 import 'package:oydacli/create.dart';
 
+/// The main entry point of the OYDA CLI application.
 void main(List<String> arguments) {
   final parser = ArgParser()
+    /// Adds a command to the oydacli tool.
+    /// 
+    /// The `create` command allows the user to create a new project with the specified options.
+    /// 
+    /// Options:
+    /// - `name`: The name of the project.
+    /// - `host`: The host of the database.
+    /// - `port`: The port of the database. Defaults to '5432'.
+    /// - `oydaBase`: The name of the Oydabase.
+    /// - `user`: The username for the database.
+    /// - `password`: The password for the database.
     ..addCommand(
         'create',
         ArgParser()

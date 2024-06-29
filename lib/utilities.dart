@@ -2,6 +2,16 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+/// Sets the Oydabase configuration by sending a POST request to the specified API endpoint.
+///
+/// The function takes in the [host], [port], [oydaBase], [user], and [password] parameters
+/// to construct the request body. It then sends the request to the API endpoint and
+/// handles the response accordingly.
+///
+/// If the request is successful (status code 200), it prints a success message and returns true.
+/// Otherwise, it prints the error message from the response body and returns false.
+///
+/// If an error occurs during the request, it prints the error message and returns false.
 Future<bool> setOydabase(String host, int port, String oydaBase, String user, String password) async {
   final url = Uri.parse('http://localhost:5000/api/setOydabase');
   final Map<String, dynamic> requestBody = {
@@ -32,6 +42,10 @@ Future<bool> setOydabase(String host, int port, String oydaBase, String user, St
   }
 }
 
+/// Makes a file read-only by changing its permissions to 444.
+///
+/// Returns `true` if the file was successfully made read-only,
+/// otherwise returns `false`.
 bool makeReadOnly(String filePath) {
   try {
     final result = Process.runSync('chmod', ['444', filePath]);

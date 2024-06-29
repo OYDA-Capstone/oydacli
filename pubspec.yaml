@@ -11,7 +11,9 @@ dependencies:
   # path: ^1.8.0
   args: ^2.5.0
   http: ^1.2.1
-  oydadb: ^1.0.3 
+  mockito: ^5.4.4
+  oydadb: ^1.0.4
+  path: ^1.9.0
 
 dev_dependencies:
   lints: ^3.0.0
