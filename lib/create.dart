@@ -1,8 +1,33 @@
 import 'dart:io';
+import 'contents.dart';
 import 'utilities.dart';
 
-void createProject(String projectName, String host, int port, String oydaBase, String user, String password) async {
-  final bool isConnected = await setOydabase(host, port, oydaBase, user, password);
+/// Creates a new Oyda project with the given parameters.
+///
+/// - The `projectName` is the name of the project to be created.
+/// - The `host` is the host address of the oydabase.
+/// The `port` is the port number of the oydabase.
+/// The `oydaBase` is the name of the oydabase.
+/// The `user` is the username for authentication.
+/// The `password` is the password for authentication.
+///
+/// This function connects to the oydabase using the provided parameters.
+/// If the connection is successful, it creates a new directory with the `projectName`.
+/// Inside the project directory, it creates the necessary subdirectories and files
+/// for an Oyda project, including 'lib/main.dart', 'test/widget_test.dart',
+/// 'README.md', and '.env' files.
+/// It also sets the 'pubspec.yaml' file to read-only.
+///
+/// If the connection to the oydabase fails or the project directory already exists,
+/// appropriate error messages are printed and the function returns.
+///
+/// After successfully creating the project, a success message is printed.
+Future<void> createProject(
+    String projectName, String host, int port, String oydaBase, String user, String password) async {
+  print('Creating project $projectName...');
+  final result = await setOydabase(host, port, oydaBase, user, password);
+  final bool isConnected = result['success'];
+  final int devKey = result['dev_key'];
 
   if (!isConnected) {
     print(
@@ -10,103 +35,62 @@ void createProject(String projectName, String host, int port, String oydaBase, S
     return;
   }
 
+  // create project directory
   final Directory projectDir = Directory(projectName);
-
   if (projectDir.existsSync()) {
     print('Directory $projectName already exists.');
     return;
   }
+  projectDir.createSync(recursive: true);
 
-  projectDir.createSync();
+  // create project files
 
+  // main.dart
   Directory('$projectName/lib').createSync(recursive: true);
-  File('$projectName/lib/main.dart').writeAsStringSync(_mainContent(projectName));
+  final main = File('$projectName/lib/main.dart');
+  if (!main.existsSync()) {
+    main.writeAsStringSync(mainContent(projectName));
+  }
+
+  // widget_test.dart
   Directory('$projectName/test').createSync(recursive: true);
-  File('$projectName/test/widget_test.dart').writeAsStringSync(_widgetTestContent(projectName));
-  File('$projectName/README.md').writeAsStringSync('# $projectName\n\nA new Oyda project.');
-  File('$projectName/.env').writeAsStringSync(_envContent(host, port, oydaBase, user, password));
+  final widgetTest = File('$projectName/test/widget_test.dart');
+  if (!widgetTest.existsSync()) {
+    widgetTest.writeAsStringSync(widgetTestContent(projectName));
+  }
 
-  // Set the pubspec.yaml file to read-only
+  // README.md
+  final readme = File('$projectName/README.md');
+  if (!readme.existsSync()) {
+    readme.writeAsStringSync('# $projectName\n\nA new Oyda project.');
+  }
+
+  // .env
+  final env = File('$projectName/.env');
+  if (!env.existsSync()) {
+    env.writeAsStringSync(envContent(host, port, oydaBase, user, password, devKey));
+  }
+
+  // dependencies.txt
+  final dependencies = File('$projectName/dependencies.txt');
+  if (!dependencies.existsSync()) {
+    dependencies.writeAsStringSync('dependencies: \n\n');
+  }
+
+  // pubspec.yaml
   final pubspecFile = File('$projectName/pubspec.yaml');
-  pubspecFile.writeAsStringSync(_pubspecContent(projectName));
-
-  if (makeReadOnly(pubspecFile.path)) {
-    print('pubspec.yaml now read-only.');
-  } else {
-    print('Failed to make pubspec.yaml to read-only.');
+  if (!pubspecFile.existsSync()) {
+    pubspecFile.writeAsStringSync(pubspecContent(projectName));
+    // setPubspecReadOnly(projectName, pubspecContent(projectName));
+    if (makeReadOnly(pubspecFile.path)) {
+      print('pubspec.yaml now read-only.');
+    } else {
+      print('Failed to make pubspec.yaml to read-only.');
+    }
   }
 
   print('Project $projectName created successfully.');
+  fetchDependencies(projectName);
 }
 
-String _mainContent(String projectName) => '''
-// import 'package:flutter/material.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
-// import 'package:oydadb/src/oyda_interface.dart';
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-
-//   await dotenv.load(fileName: ".env");
-//   var table = await OydaInterface().selectTable('test');
-//   print(table);
-//   runApp(const MyApp());
-// }
-''';
-
-String _widgetTestContent(String projectName) => '''
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:oydadb/src/oyda_interface.dart';
-
-void main() async {
-  group('OYDAInterface', () {
-    test('selectTable', () async {
-      await dotenv.load(fileName: ".env");
-      var table = await OydaInterface().selectTable('test');
-      print(table);
-
-    });
-  });
-
-}
-''';
-
-String _pubspecContent(String projectName) => '''
-### THIS FILE IS READ-ONLY. To update project dependencies, use the 'oyda update' command. ###
-
-name: testproj
-description: A new Oyda project.
-version: 1.0.0+1
-
-environment:
-  sdk: '>=3.4.0 <4.0.0'
-  flutter: ">=1.17.0"
-
-dependencies:
-  flutter:
-    sdk: flutter
-  flutter_dotenv: ^5.1.0
-  http: ^1.2.1
-  oydadb: ^1.0.3
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-flutter:
-  uses-material-design: true
-  assets:
-    - .env
-
-''';
-
-String _envContent(String host, int port, String oydaBase, String user, String password) {
-  return '''
-HOST=$host
-PORT=$port
-OYDA_BASE=$oydaBase
-USER=$user
-PASSWORD=$password
-''';
-}
