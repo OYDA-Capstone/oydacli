@@ -152,7 +152,7 @@ Future<void> fetchDependencies(String? projectName) async {
   final List<String> dependencies = await getDependencies();
   if (dependencies.isNotEmpty) {
     final File dependenciesFile = File('$projectName/dependencies.txt');
-    dependenciesFile.writeAsStringSync('dependencies:\n' + dependencies.join('\n'));
+    dependenciesFile.writeAsStringSync('dependencies:\n${dependencies.join('\n')}');
     print('Dependencies written to dependencies.txt');
   } else {
     print('No dependencies found.');
