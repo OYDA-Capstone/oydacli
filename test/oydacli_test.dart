@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:oydacli/utilities.dart';
 import 'package:test/test.dart';
 import 'package:oydacli/create.dart';
@@ -18,7 +20,6 @@ void main() {
     // final String password = 'none';
 
     test('create project', () async {
-      print('testing create project...');
       await createProject(projectDir, host, port, oydaBase, user, password);
     });
 
@@ -27,7 +28,7 @@ void main() {
     });
 
     test('add dependencies', () async {
-      await addDependency("http");
+      await addDependency(projectDir, "http");
     });
   });
 }

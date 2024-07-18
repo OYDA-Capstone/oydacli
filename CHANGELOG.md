@@ -18,3 +18,13 @@
 ## 1.0.2
 
 - feat: experimental release.
+
+
+## 1.0.3
+
+- feat: experimental release.
+- feat: fix env issues.
+
+## 2.0.0
+
+- feat: initial release.

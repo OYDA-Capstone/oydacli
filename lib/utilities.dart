@@ -45,39 +45,29 @@ Future<Map<String, dynamic>> setOydabase(String host, int port, String oydaBase,
   }
 }
 
-/// Makes a file read-only by changing its permissions to 444.
+/// Fetches the dependencies for the specified project.
 ///
-/// Returns `true` if the file was successfully made read-only,
-/// otherwise returns `false`.
-bool makeReadOnly(String filePath) {
-  try {
-    final result = Process.runSync('chmod', ['444', filePath]);
+/// The function checks if the `pubspec.yaml` and `.env` files exist in the specified `projectName`
+/// directory. If they do, it fetches the dependencies using `getDependencies` and writes them
+/// to a `dependencies.txt` file within the project directory.
+///
+/// Prints appropriate messages based on the outcome.
+Future<void> fetchDependencies(String? projectName) async {
+  final File pubspecFile = File('$projectName/pubspec.yaml');
+  final File envFile = File('$projectName/.env');
 
-    if (result.exitCode == 0) {
-      return true;
-    } else {
-      print('Failed to make file read-only: ${result.stderr}');
-      return false;
-    }
-  } catch (e) {
-    print('Error making file read-only: $e');
-    return false;
+  if (!pubspecFile.existsSync() || !envFile.existsSync()) {
+    print('This command must be run in the directory of an Oyda project.');
+    return;
   }
-}
 
-/// Sets the pubspec.yaml file as read-only.
-///
-/// The function takes in the `projectName` and the `pubspec` content to write into the file.
-/// After writing the content, it attempts to make the file read-only.
-/// Prints success or failure message based on the outcome.
-void setPubspecReadOnly(String projectName, String pubspec) {
-  final pubspecFile = File('$projectName/pubspec.yaml');
-  pubspecFile.writeAsStringSync(pubspec);
-
-  if (makeReadOnly(pubspecFile.path)) {
-    print('pubspec.yaml now read-only.');
+  final List<String> dependencies = await getDependencies(projectName);
+  if (dependencies.isNotEmpty) {
+    final File dependenciesFile = File('$projectName/dependencies.txt');
+    dependenciesFile.writeAsStringSync('dependencies:\n${dependencies.join('\n')}');
+    print('Dependencies written to dependencies.txt');
   } else {
-    print('Failed to make pubspec.yaml read-only.');
+    print('No dependencies found.');
   }
 }
 
@@ -89,9 +79,9 @@ void setPubspecReadOnly(String projectName, String pubspec) {
 ///
 /// If the request is successful, it returns a list of dependencies as strings.
 /// If an error occurs, it prints the error message and returns an empty list.
-Future<List<String>> getDependencies() async {
+Future<List<String>> getDependencies(String? projectName) async {
   var env = DotEnv(includePlatformEnvironment: true);
-  env.load(['.env']);
+  env.load(['$projectName/.env']);
 
   String? host = env['HOST'];
   int? port = int.tryParse(env['PORT']!);
@@ -99,12 +89,8 @@ Future<List<String>> getDependencies() async {
   String? user = env['USER'];
   String? password = env['PASSWORD'];
 
-  print(host);
-  print(port);
-  print(oydaBase);
-  print(user);
-  print(password);
-  
+  print('Getting dependencies from $host:$port/$oydaBase');
+
   if (host == null || port == null || oydaBase == null || user == null || password == null) {
     print('Error: Missing required connection parameters.');
     return [];
@@ -139,32 +125,6 @@ Future<List<String>> getDependencies() async {
   }
 }
 
-/// Fetches the dependencies for the specified project.
-///
-/// The function checks if the `pubspec.yaml` and `.env` files exist in the specified `projectName`
-/// directory. If they do, it fetches the dependencies using `getDependencies` and writes them
-/// to a `dependencies.txt` file within the project directory.
-///
-/// Prints appropriate messages based on the outcome.
-Future<void> fetchDependencies(String? projectName) async {
-  final File pubspecFile = File('$projectName/pubspec.yaml');
-  final File envFile = File('$projectName/.env');
-
-  if (!pubspecFile.existsSync() || !envFile.existsSync()) {
-    print('This command must be run in the directory of an Oyda project.');
-    return;
-  }
-
-  final List<String> dependencies = await getDependencies();
-  if (dependencies.isNotEmpty) {
-    final File dependenciesFile = File('$projectName/dependencies.txt');
-    dependenciesFile.writeAsStringSync('dependencies:\n${dependencies.join('\n')}');
-    print('Dependencies written to dependencies.txt');
-  } else {
-    print('No dependencies found.');
-  }
-}
-
 /// Adds a dependency to the Oydabase.
 ///
 /// The function loads environment variables from the `.env` file to get the necessary
@@ -173,9 +133,9 @@ Future<void> fetchDependencies(String? projectName) async {
 ///
 /// If the request is successful, it prints a success message.
 /// If an error occurs, it prints the error message.
-Future<void> addDependency(String packageName) async {
+Future<void> addDependency(String projectName, String packageName) async {
   var env = DotEnv(includePlatformEnvironment: true);
-  env.load(['.env']);
+  env.load(['$projectName/.env']);
 
   String? host = env['HOST'];
   int? port = int.tryParse(env['PORT']!);
@@ -212,5 +172,41 @@ Future<void> addDependency(String packageName) async {
     }
   } catch (e) {
     print('Error connecting to the Oydabase: $e');
+  }
+}
+
+/// Makes a file read-only by changing its permissions to 444.
+///
+/// Returns `true` if the file was successfully made read-only,
+/// otherwise returns `false`.
+bool makeReadOnly(String filePath) {
+  try {
+    final result = Process.runSync('chmod', ['444', filePath]);
+
+    if (result.exitCode == 0) {
+      return true;
+    } else {
+      print('Failed to make file read-only: ${result.stderr}');
+      return false;
+    }
+  } catch (e) {
+    print('Error making file read-only: $e');
+    return false;
+  }
+}
+
+/// Sets the pubspec.yaml file as read-only.
+///
+/// The function takes in the `projectName` and the `pubspec` content to write into the file.
+/// After writing the content, it attempts to make the file read-only.
+/// Prints success or failure message based on the outcome.
+void setPubspecReadOnly(String projectName, String pubspec) {
+  final pubspecFile = File('$projectName/pubspec.yaml');
+  pubspecFile.writeAsStringSync(pubspec);
+
+  if (makeReadOnly(pubspecFile.path)) {
+    print('pubspec.yaml now read-only.');
+  } else {
+    print('Failed to make pubspec.yaml read-only.');
   }
 }
