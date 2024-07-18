@@ -5,17 +5,17 @@ import 'package:oydacli/create.dart';
 
 void main() {
   group('createProject', () {
-    final String projectDir ='../apptest/test_project_rn';
-    // final String host = 'http://oydaserver.postgres.database.azure.com';
-    // final int port = 5432;
-    // final String oydaBase = 'oydadb';
-    // final String user = 'oydaadmin';
-    // final String password = 'OhenebaOmar123';
-    final String host = 'localhost';
+    final String projectDir ='../apptest/testhosted';
+    final String host = 'oydaserver.postgres.database.azure.com';
     final int port = 5432;
-    final String oydaBase = 'oyda_db';
+    final String oydaBase = 'oydadb';
     final String user = 'oydaadmin';
-    final String password = 'none';
+    final String password = 'OhenebaOmar123';
+    // final String host = 'localhost';
+    // final int port = 5432;
+    // final String oydaBase = 'oyda_db';
+    // final String user = 'oydaadmin';
+    // final String password = 'none';
 
     test('create project', () async {
       print('testing create project...');

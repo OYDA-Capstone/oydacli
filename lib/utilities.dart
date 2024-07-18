@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 ///
 /// If an error occurs during the request, it prints the error message and returns false.
 Future<Map<String, dynamic>> setOydabase(String host, int port, String oydaBase, String user, String password) async {
-  final url = Uri.parse('http://localhost:5000/api/set_oydabase');
+  final url = Uri.parse('https://oydabackend.azurewebsites.net/api/set_oydabase');
   final Map<String, dynamic> requestBody = {
     'host': host,
     'port': port,
@@ -99,12 +99,18 @@ Future<List<String>> getDependencies() async {
   String? user = env['USER'];
   String? password = env['PASSWORD'];
 
+  print(host);
+  print(port);
+  print(oydaBase);
+  print(user);
+  print(password);
+  
   if (host == null || port == null || oydaBase == null || user == null || password == null) {
     print('Error: Missing required connection parameters.');
     return [];
   }
 
-  final url = Uri.parse('http://localhost:5000/api/get_dependencies');
+  final url = Uri.parse('https://oydabackend.azurewebsites.net/api/get_dependencies');
   final Map<String, dynamic> requestBody = {
     'host': host,
     'port': port,
@@ -121,7 +127,7 @@ Future<List<String>> getDependencies() async {
 
     if (response.statusCode == 200) {
       final responseBody = json.decode(response.body);
-      return responseBody['dependencies'].cast<String>();
+      return List<String>.from(responseBody['dependencies']);
     } else {
       final responseBody = json.decode(response.body);
       print('Error: ${responseBody['error']}');
@@ -181,7 +187,7 @@ Future<void> addDependency(String packageName) async {
     print('Error: Missing required connection parameters.');
     return;
   }
-  final url = Uri.parse('http://localhost:5000/api/add_dependency');
+  final url = Uri.parse('https://oydabackend.azurewebsites.net/api/add_dependency');
   final Map<String, dynamic> requestBody = {
     'host': host,
     'port': port,

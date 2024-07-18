@@ -28,7 +28,7 @@ void main(List<String> arguments) async {
           ..addOption('password', abbr: 'w', help: 'Database password'))
 
     /// The `fetch` command allows the user to fetch the dependencies for the current project.
-    /// 
+    ///
     // Options:
     /// - `name`: The name of the project.
     ..addCommand('fetch', ArgParser()..addOption('name', abbr: 'n', help: 'Project name'))
