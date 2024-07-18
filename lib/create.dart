@@ -6,10 +6,10 @@ import 'utilities.dart';
 ///
 /// - The `projectName` is the name of the project to be created.
 /// - The `host` is the host address of the oydabase.
-/// The `port` is the port number of the oydabase.
-/// The `oydaBase` is the name of the oydabase.
-/// The `user` is the username for authentication.
-/// The `password` is the password for authentication.
+/// - The `port` is the port number of the oydabase.
+/// - The `oydaBase` is the name of the oydabase.
+/// - The `user` is the username for authentication.
+/// - The `password` is the password for authentication.
 ///
 /// This function connects to the oydabase using the provided parameters.
 /// If the connection is successful, it creates a new directory with the `projectName`.
@@ -89,8 +89,8 @@ Future<void> createProject(
     }
   }
 
+  await fetchDependencies(projectName);
   print('Project $projectName created successfully.');
-  fetchDependencies(projectName);
 }
 
 
