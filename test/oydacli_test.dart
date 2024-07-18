@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:oydacli/utilities.dart';
 import 'package:test/test.dart';
 import 'package:oydacli/create.dart';

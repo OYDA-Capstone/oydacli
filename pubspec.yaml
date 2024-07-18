@@ -1,6 +1,6 @@
 name: oydacli
 description: CLI for Oyda projects
-version: 2.0.0
+version: 2.0.1
 homepage: https://github.com/OYDA-Interface/oydacli
 
 environment:

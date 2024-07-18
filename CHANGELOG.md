@@ -28,3 +28,7 @@
 ## 2.0.0
 
 - feat: initial release.
+
+## 2.0.1
+
+- feat: fix cli help message.
