@@ -52,6 +52,13 @@ Future<void> createProject(
     main.writeAsStringSync(mainContent(projectName));
   }
 
+  // index.html
+  Directory('$projectName/web').createSync(recursive: true);
+  final web = File('$projectName/web/index.html');
+  if (!web.existsSync()) {
+    web.writeAsStringSync(indexContent(projectName));
+  }
+
   // widget_test.dart
   Directory('$projectName/test').createSync(recursive: true);
   final widgetTest = File('$projectName/test/widget_test.dart');
@@ -63,6 +70,11 @@ Future<void> createProject(
   final readme = File('$projectName/README.md');
   if (!readme.existsSync()) {
     readme.writeAsStringSync('# $projectName\n\nA new Oyda project.');
+  }
+
+  final testIML = File('$projectName/test.iml');
+  if (!testIML.existsSync()) {
+    testIML.writeAsStringSync(testIMLContent());
   }
 
   // .env

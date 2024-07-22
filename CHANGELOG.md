@@ -32,3 +32,7 @@
 ## 2.0.1
 
 - feat: fix cli help message.
+
+## 2.0.2
+
+- feat: add web template
