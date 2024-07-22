@@ -105,6 +105,6 @@ void main(List<String> arguments) async {
     print('  --user, -u        Database username');
     print('  --password, -w    Database password');
     print('  --package, -p     Package name (for add command)');
-    print(parser.usage);
+    print('  --help, -h        Show this help message');
   }
 }

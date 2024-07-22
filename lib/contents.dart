@@ -2,39 +2,49 @@
 ///
 /// The main content includes import statements, the main function, and the runApp() function.
 String mainContent(String projectName) => '''
-// import 'package:flutter/material.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
-// import 'package:oydadb/src/oyda_interface.dart';
+import 'package:flutter/material.dart';
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
+void main() {
+  runApp(MyApp());
+}
 
-//   await dotenv.load(fileName: ".env");
-//   var table = await OydaInterface().selectTable('test');
-//   print(table);
-//   runApp(const MyApp());
-// }
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Welcome to OYDACLI'),
+        ),
+        body: Center(
+          child: Text('Built with love by O2🖤'),
+        ),
+      ),
+    );
+  }
+}
+
 ''';
 
 /// Returns the widget test content as a string for the given project name.
 ///
 /// The widget test content includes import statements, the main test function, and a test case.
 String widgetTestContent(String projectName) => '''
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:oydadb/src/oyda_interface.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:oydadb/src/oyda_interface.dart';
 
-void main() async {
-  group('OYDAInterface', () {
-    test('selectTable', () async {
-      await dotenv.load(fileName: ".env");
-      var table = await OydaInterface().selectTable('test');
-      print(table);
+// void main() async {
+//   group('OYDAInterface', () {
+//     test('selectTable', () async {
+//       await dotenv.load(fileName: ".env");
+//       var table = await OydaInterface().selectTable('test');
+//       print(table);
 
-    });
-  });
+//     });
+//   });
 
-}
+// }
 ''';
 
 /// Returns the pubspec.yaml content as a string for the given project name.
@@ -80,3 +90,53 @@ USER=$user
 PASSWORD=$password
 DEV_KEY=$devKey
 ''';
+
+String indexContent(String projectName) => '''
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="\$FLUTTER_BASE_HREF" />
+
+		<meta charset="UTF-8" />
+		<meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+		<meta name="description" content="A new Flutter project." />
+
+		<!-- iOS meta tags & icons -->
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="apple-mobile-web-app-title" content="testapp" />
+		<link rel="apple-touch-icon" href="icons/Icon-192.png" />
+
+		<!-- Favicon -->
+		<link rel="icon" type="image/png" href="favicon.png" />
+
+		<title>testapp</title>
+		<!-- <link rel="manifest" href="manifest.json"> -->
+	</head>
+	<body>
+		<script src="flutter_bootstrap.js" async></script>
+	</body>
+</html>
+''';
+
+
+String testIMLContent() => '''
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://\$MODULE_DIR\$">
+      <sourceFolder url="file://\$MODULE_DIR\$/lib" isTestSource="false" />
+      <sourceFolder url="file://\$MODULE_DIR\$/test" isTestSource="true" />
+      <excludeFolder url="file://\$MODULE_DIR\$/.dart_tool" />
+      <excludeFolder url="file://\$MODULE_DIR\$/.idea" />
+      <excludeFolder url="file://\$MODULE_DIR\$/build" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Flutter Plugins" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
+  </component>
+</module>
+''';
+
