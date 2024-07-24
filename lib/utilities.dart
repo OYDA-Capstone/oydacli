@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:dotenv/dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:yaml_magic/yaml_magic.dart';
 
 /// Sets the Oydabase configuration by sending a POST request to the specified API endpoint.
 ///
@@ -61,11 +62,25 @@ Future<void> fetchDependencies(String? projectName) async {
     return;
   }
 
-  final List<String> dependencies = await getDependencies(projectName);
-  if (dependencies.isNotEmpty) {
+  final List<String> packages = await getDependencies(projectName);
+
+  if (packages.isNotEmpty) {
+    final pubspecMap = YamlMagic.load('$projectName/pubspec.yaml');
+    final dependencies = pubspecMap['dependencies'];
+
+    for (var dep in packages) {
+      final parts = dep.split(':');
+      if (parts.length == 2) {
+        final name = parts[0].trim();
+        final version = parts[1].trim();
+        dependencies[name] = '^$version';
+      }
+    }
+    await pubspecFile.writeAsString(pubspecMap.toString());
+
     final File dependenciesFile = File('$projectName/dependencies.txt');
-    dependenciesFile.writeAsStringSync('dependencies:\n${dependencies.join('\n')}');
-    print('Dependencies written to dependencies.txt');
+    dependenciesFile.writeAsStringSync('dependencies:\n${packages.join('\n')}');
+    print('Dependencies written to dependencies.txt and pubspec.yaml updated.');
   } else {
     print('No dependencies found.');
   }

@@ -555,6 +555,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  yaml_magic:
+    dependency: "direct main"
+    description:
+      name: yaml_magic
+      sha256: "6f281c7fd58492e8f30f9a7335697193d61269313952fc43e3baa784860062f3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.6"
 sdks:
   dart: ">=3.4.0 <4.0.0"
   flutter: ">=1.17.0"

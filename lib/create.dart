@@ -35,74 +35,73 @@ Future<void> createProject(
     return;
   }
 
-  // create project directory
-  final Directory projectDir = Directory(projectName);
-  if (projectDir.existsSync()) {
-    print('Directory $projectName already exists.');
-    return;
-  }
-  projectDir.createSync(recursive: true);
-
-  // create project files
-
-  // main.dart
-  Directory('$projectName/lib').createSync(recursive: true);
-  final main = File('$projectName/lib/main.dart');
-  if (!main.existsSync()) {
-    main.writeAsStringSync(mainContent(projectName));
-  }
-
-  // index.html
-  Directory('$projectName/web').createSync(recursive: true);
-  final web = File('$projectName/web/index.html');
-  if (!web.existsSync()) {
-    web.writeAsStringSync(indexContent(projectName));
-  }
-
-  // widget_test.dart
-  Directory('$projectName/test').createSync(recursive: true);
-  final widgetTest = File('$projectName/test/widget_test.dart');
-  if (!widgetTest.existsSync()) {
-    widgetTest.writeAsStringSync(widgetTestContent(projectName));
-  }
-
-  // README.md
-  final readme = File('$projectName/README.md');
-  if (!readme.existsSync()) {
-    readme.writeAsStringSync('# $projectName\n\nA new Oyda project.');
-  }
-
-  final testIML = File('$projectName/test.iml');
-  if (!testIML.existsSync()) {
-    testIML.writeAsStringSync(testIMLContent());
-  }
-
-  // .env
-  final env = File('$projectName/.env');
-  if (!env.existsSync()) {
-    env.writeAsStringSync(envContent(host, port, oydaBase, user, password, devKey));
-  }
-
-  // dependencies.txt
-  final dependencies = File('$projectName/dependencies.txt');
-  if (!dependencies.existsSync()) {
-    dependencies.writeAsStringSync('dependencies: \n\n');
-  }
-
-  // pubspec.yaml
-  final pubspecFile = File('$projectName/pubspec.yaml');
-  if (!pubspecFile.existsSync()) {
-    pubspecFile.writeAsStringSync(pubspecContent(projectName));
-    // setPubspecReadOnly(projectName, pubspecContent(projectName));
-    if (makeReadOnly(pubspecFile.path)) {
-      print('pubspec.yaml now read-only.');
-    } else {
-      print('Failed to make pubspec.yaml to read-only.');
-    }
-  }
-
+  createDirectory(projectName);
+  createMainFile(projectName);
+  createIndexFile(projectName);
+  createWidgetTestFile(projectName);
+  createReadmeFile(projectName);
+  createTestIMLFile(projectName);
+  createEnvFile(projectName, host, port, oydaBase, user, password, devKey);
+  createDependenciesFile(projectName);
+  createPubspecFile(projectName);
+  await addDefaultDependencies(projectName);
   await fetchDependencies(projectName);
   print('Project $projectName created successfully.');
 }
 
+void createDirectory(String path) {
+  final Directory dir = Directory(path);
+  if (!dir.existsSync()) {
+    dir.createSync(recursive: true);
+  }
+}
 
+void createFile(String path, String content) {
+  final File file = File(path);
+  if (!file.existsSync()) {
+    file.writeAsStringSync(content);
+  }
+}
+
+void createMainFile(String projectName) {
+  createDirectory('$projectName/lib');
+  createFile('$projectName/lib/main.dart', mainContent(projectName));
+}
+
+void createIndexFile(String projectName) {
+  createDirectory('$projectName/web');
+  createFile('$projectName/web/index.html', indexContent(projectName));
+}
+
+void createWidgetTestFile(String projectName) {
+  createDirectory('$projectName/test');
+  createFile('$projectName/test/widget_test.dart', widgetTestContent(projectName));
+}
+
+void createReadmeFile(String projectName) {
+  createFile('$projectName/README.md', '# $projectName\n\nA new Oyda project.');
+}
+
+void createTestIMLFile(String projectName) {
+  createFile('$projectName/test.iml', testIMLContent());
+}
+
+void createEnvFile(
+    String projectName, String host, int port, String oydaBase, String user, String password, int devKey) {
+  createFile('$projectName/.env', envContent(host, port, oydaBase, user, password, devKey));
+}
+
+void createDependenciesFile(String projectName) {
+  createFile('$projectName/dependencies.txt', 'dependencies: \n\n');
+}
+
+void createPubspecFile(String projectName) {
+  createFile('$projectName/pubspec.yaml', pubspecContent(projectName));
+}
+
+Future<void> addDefaultDependencies(String projectName) async {
+  const List<String> defaultDependencies = ['flutter_dotenv', 'oydadb'];
+  for (String dependency in defaultDependencies) {
+    await addDependency(projectName, dependency);
+  }
+}
