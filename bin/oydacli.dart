@@ -20,7 +20,7 @@ void main(List<String> arguments) async {
     ..addCommand(
         'create',
         ArgParser()
-          ..addOption('name', abbr: 'n', help: 'Project name')
+          ..addOption('projectName', abbr: 'n', help: 'Project name')
           ..addOption('host', abbr: 'h', help: 'Database host')
           ..addOption('port', abbr: 'p', help: 'Database port', defaultsTo: '5432')
           ..addOption('oydaBase', abbr: 'o', help: 'Oydabase name')
@@ -31,7 +31,7 @@ void main(List<String> arguments) async {
     ///
     // Options:
     /// - `name`: The name of the project.
-    ..addCommand('fetch', ArgParser()..addOption('name', abbr: 'n', help: 'Project name'))
+    ..addCommand('fetch', ArgParser()..addOption('projectName', abbr: 'n', help: 'Project name'))
 
     /// The `add` command allows the user to add a new package dependency.
     //
@@ -53,7 +53,7 @@ void main(List<String> arguments) async {
 
   // Handle `create` command
   if (argResults.command?.name == 'create') {
-    final String? projectName = argResults.command?['name'];
+    final String? projectName = argResults.command?['projectName'];
     final String? host = argResults.command?['host'];
     final int port = int.parse(argResults.command?['port'] ?? '5432');
     final String? oydaBase = argResults.command?['oydaBase'];
@@ -64,22 +64,22 @@ void main(List<String> arguments) async {
       await createProject(projectName, host, port, oydaBase, user, password);
     } else {
       print(
-          'Project name, host, Oydabase, username, and password are required. Use --name <project_name>, --host <host>, --oydaBase <database_name>, --user <username>, and --password <password>.');
+          'Project name, host, Oydabase, username, and password are required. Use --projectName <project_name>, --host <host>, --oydaBase <database_name>, --user <username>, and --password <password>.');
     }
 
     // Handle `fetch` command
   } else if (argResults.command?.name == 'fetch') {
-    final String? projectName = argResults.command?['name'];
+    final String? projectName = argResults.command?['projectName'];
     await fetchDependencies(projectName);
 
     // Handle `add` command
   } else if (argResults.command?.name == 'add') {
     final String? package = argResults.command?['package'];
-    final String? projectName = argResults.command?['name'];
+    final String? projectName = argResults.command?['projectName'];
     if (package != null && projectName != null) {
       await addDependency(projectName, package);
     } else {
-      print('Project name and package name are required. Use --package <package_name> and --name <project_name>.');
+      print('Project name and package name are required. Use --projectName <project_name>, --package <package_name>.');
     }
 
     // Default usage message
@@ -94,11 +94,11 @@ void main(List<String> arguments) async {
     print('  oydacli fetch');
     print('    Fetch the dependencies for the current OYDA project.');
     print('');
-    print('  oydacli add  -- projectName <project_name> --package <package_name>');
+    print('  oydacli add -- projectName <project_name> --package <package_name>');
     print('    Add a new package dependency to the current OYDA project.');
     print('');
     print('Options:');
-    print('  --name, -n        Project name');
+    print('  --projectName, -n        Project name');
     print('  --host, -h        Database host');
     print('  --port, -p        Database port (default: 5432)');
     print('  --oydaBase, -o    Oydabase name');
