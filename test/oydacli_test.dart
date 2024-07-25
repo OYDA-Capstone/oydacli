@@ -5,7 +5,7 @@ import 'package:oydacli/create.dart';
 
 void main() {
   group('createProject', () {
-    final String projectDir ='../apptest/testhosted';
+    final String projectDir ='../apptest/testhosted3';
     final String host = 'oydaserver.postgres.database.azure.com';
     final int port = 5432;
     final String oydaBase = 'oydadb';
@@ -26,7 +26,7 @@ void main() {
     });
 
     test('add dependencies', () async {
-      await addDependency(projectDir, "http");
+      await addDependency(projectDir, "yaml_magic");
     });
   });
 }

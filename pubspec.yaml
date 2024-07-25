@@ -1,6 +1,6 @@
 name: oydacli
 description: CLI for Oyda projects
-version: 2.0.2
+version: 2.0.3
 homepage: https://github.com/OYDA-Interface/oydacli
 
 environment:
@@ -14,6 +14,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   dotenv: ^4.2.0
   path: ^1.9.0
+  yaml_magic: ^1.0.6
 
 dev_dependencies:
   lints: ^3.0.0

@@ -36,3 +36,7 @@
 ## 2.0.2
 
 - feat: add web template
+
+## 2.0.3
+
+- feat: modify cli options

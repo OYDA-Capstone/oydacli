@@ -51,8 +51,8 @@ String widgetTestContent(String projectName) => '''
 ///
 /// The pubspec.yaml content includes project metadata, dependencies, and dev dependencies.
 String pubspecContent(String projectName) => '''
-### THIS FILE IS READ-ONLY. To update project dependencies, use the 'oyda update' command. ###
 
+### THIS FILE IS READ-ONLY. To update project dependencies, use the 'oyda fetch' command in your terminal. ###
 name: $projectName
 description: A new Oyda project.
 version: 1.0.0+1
@@ -61,22 +61,18 @@ environment:
   sdk: '>=3.4.0 <4.0.0'
   flutter: ">=1.17.0"
 
-dependencies:
-  flutter:
-    sdk: flutter
-  flutter_dotenv: ^5.1.0
-  http: ^1.2.1
-  oydadb: ^1.0.3
-
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+
+dependencies:
+  flutter:
     sdk: flutter
 
 flutter:
   uses-material-design: true
   assets:
     - .env
-
 ''';
 
 /// Returns the .env file content as a string for the given host, port, OYDA base, user, and password.
