@@ -40,3 +40,11 @@
 ## 2.0.3
 
 - feat: modify cli options
+
+## 2.0.4
+
+- feat: update fetch dependencies function to modify pubspec file
+
+## 2.0.5
+
+- feat: add defualt gitignore and table config file for table creation and deletion
