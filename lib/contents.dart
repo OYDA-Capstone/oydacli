@@ -87,6 +87,9 @@ PASSWORD=$password
 DEV_KEY=$devKey
 ''';
 
+/// Default index file or something
+///
+///
 String indexContent(String projectName) => '''
 <!DOCTYPE html>
 <html>
@@ -115,7 +118,7 @@ String indexContent(String projectName) => '''
 </html>
 ''';
 
-
+/// Default IML file
 String testIMLContent() => '''
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
@@ -136,3 +139,26 @@ String testIMLContent() => '''
 </module>
 ''';
 
+//Default oydaBase Config file
+String tableConfigContent() => '''
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:oydadb/src/oyda_interface.dart';
+
+void main() async {
+// Create a new table in the OydaBase
+// Replace test_table with the name of the table you want to create in your oydabase
+  await OydaInterface().createTable('test_table', {'name': 'VARCHAR(255)', 'age': 'INTEGER'});
+
+// Drop an existing table from the OydaBase
+// Replace test_table with the name of the table you want to drop
+  await OydaInterface().dropTable('test_table');
+}
+''';
+
+String gitignoreContent() => '''
+# Created by `oydacli create`
+
+.dart_tool/
+.env
+''';

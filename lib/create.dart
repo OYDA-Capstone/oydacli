@@ -44,6 +44,8 @@ Future<void> createProject(
   createEnvFile(projectName, host, port, oydaBase, user, password, devKey);
   createDependenciesFile(projectName);
   createPubspecFile(projectName);
+  createTableConfigFile(projectName);
+  createGitignoreFile(projectName);
   await addDefaultDependencies(projectName);
   await fetchDependencies(projectName);
   print('Project $projectName created successfully.');
@@ -97,6 +99,15 @@ void createDependenciesFile(String projectName) {
 
 void createPubspecFile(String projectName) {
   createFile('$projectName/pubspec.yaml', pubspecContent(projectName));
+}
+
+void createTableConfigFile(String projectName) {
+  createDirectory('$projectName/config');
+  createFile('$projectName/config/table.dart', tableConfigContent());
+}
+
+void createGitignoreFile(String projectName) {
+  createFile('$projectName/.gitignore', gitignoreContent());
 }
 
 Future<void> addDefaultDependencies(String projectName) async {
