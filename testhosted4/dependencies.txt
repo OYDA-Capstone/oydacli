@@ -1,0 +1,5 @@
+dependencies:
+flutter_dotenv: 5.1.0
+oydadb: 1.0.8
+validators: 3.0.0
+yaml_magic: 1.0.6
