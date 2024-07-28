@@ -1,5 +1,5 @@
 name: oydacli
-description: oydacli is a command-line application designed to streamline the creation of new Oyda projects. It automates the setup process, including the creation of project directories, initialization of Dart and Flutter files, and configuration of environment variables for database connections.
+description: oydacli is a command-line application designed to streamline the creation and management of Oyda projects. This tool automates the setup process, including creating project directories, initializing Dart and Flutter files, and configuring environment variables for database connections. By simplifying these steps, oydacli ensures a smooth and efficient workflow for developers working with the framework.
 
 version: 2.0.8
 homepage: https://github.com/OYDA-Interface/oydacli
