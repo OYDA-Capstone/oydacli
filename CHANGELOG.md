@@ -59,3 +59,7 @@
 ## 2.0.8
 
 -   feat: improve messaging for project creation
+
+## 2.0.9
+
+-   feat: update project README
