@@ -84,7 +84,7 @@ void createWidgetTestFile(String projectName) {
 }
 
 void createReadmeFile(String projectName) {
-  createFile('$projectName/README.md', '# $projectName\n\nA new Oyda project.');
+  createFile('$projectName/README.md', readmeContent(projectName));
 }
 
 void createTestIMLFile(String projectName) {
