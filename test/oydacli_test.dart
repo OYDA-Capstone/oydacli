@@ -2,11 +2,10 @@ import 'package:oydacli/utilities.dart';
 import 'package:test/test.dart';
 import 'package:oydacli/create.dart';
 
-
 void main() {
   group('createProject', () {
     // final String projectDir ='../apptest/testhosted4';
-    final String projectDir ='testhosted4';
+    final String projectDir = 'testhosted4';
     final String host = 'oydaserver.postgres.database.azure.com';
     final int port = 5432;
     final String oydaBase = 'oydadb';
@@ -21,6 +20,10 @@ void main() {
     test('create project', () async {
       await createProject(projectDir, host, port, oydaBase, user, password);
     });
+
+    // test('run project', () async {
+    //   runProject(projectDir);
+    // });
 
     test('fetch dependencies', () async {
       await fetchDependencies(projectDir);
