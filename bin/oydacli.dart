@@ -46,7 +46,8 @@ void main(List<String> arguments) async {
           ..addOption('package', abbr: 'p', help: 'Package name'))
 
     /// The `run` command allows the user to run `flutter run -d chrome`.
-    ..addCommand('run', ArgParser())
+    ..addCommand('run',
+        ArgParser()..addOption('projectName', abbr: 'p', help: 'Project name'))
     ..addFlag('help',
         abbr: 'h', negatable: false, help: 'Show this help message');
 
