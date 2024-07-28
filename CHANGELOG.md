@@ -51,3 +51,7 @@
 
 -   feat: add oydacli run functionality
 -   improve error messaging for oydacli fetch
+
+## 2.0.7
+
+-   feat: oydacli fix
