@@ -22,8 +22,8 @@ import 'utilities.dart';
 /// appropriate error messages are printed and the function returns.
 ///
 /// After successfully creating the project, a success message is printed.
-Future<void> createProject(
-    String projectName, String host, int port, String oydaBase, String user, String password) async {
+Future<void> createProject(String projectName, String host, int port,
+    String oydaBase, String user, String password) async {
   print('Creating project $projectName...');
   final result = await setOydabase(host, port, oydaBase, user, password);
   final bool isConnected = result['success'];
@@ -49,6 +49,8 @@ Future<void> createProject(
   await addDefaultDependencies(projectName);
   await fetchDependencies(projectName);
   print('Project $projectName created successfully.');
+  print(
+      'To run the project: \n 1. Navigate to the project directory: cd $projectName \n 2. Run the project: flutter run');
 }
 
 void createDirectory(String path) {
@@ -77,7 +79,8 @@ void createIndexFile(String projectName) {
 
 void createWidgetTestFile(String projectName) {
   createDirectory('$projectName/test');
-  createFile('$projectName/test/widget_test.dart', widgetTestContent(projectName));
+  createFile(
+      '$projectName/test/widget_test.dart', widgetTestContent(projectName));
 }
 
 void createReadmeFile(String projectName) {
@@ -88,9 +91,10 @@ void createTestIMLFile(String projectName) {
   createFile('$projectName/test.iml', testIMLContent());
 }
 
-void createEnvFile(
-    String projectName, String host, int port, String oydaBase, String user, String password, int devKey) {
-  createFile('$projectName/.env', envContent(host, port, oydaBase, user, password, devKey));
+void createEnvFile(String projectName, String host, int port, String oydaBase,
+    String user, String password, int devKey) {
+  createFile('$projectName/.env',
+      envContent(host, port, oydaBase, user, password, devKey));
 }
 
 void createDependenciesFile(String projectName) {

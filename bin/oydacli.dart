@@ -22,7 +22,8 @@ void main(List<String> arguments) async {
         ArgParser()
           ..addOption('projectName', abbr: 'n', help: 'Project name')
           ..addOption('host', abbr: 'h', help: 'Database host')
-          ..addOption('port', abbr: 'p', help: 'Database port', defaultsTo: '5432')
+          ..addOption('port',
+              abbr: 'p', help: 'Database port', defaultsTo: '5432')
           ..addOption('oydaBase', abbr: 'o', help: 'Oydabase name')
           ..addOption('user', abbr: 'u', help: 'Database username')
           ..addOption('password', abbr: 'w', help: 'Database password'))
@@ -31,17 +32,23 @@ void main(List<String> arguments) async {
     ///
     // Options:
     /// - `name`: The name of the project.
-    ..addCommand('fetch', ArgParser()..addOption('projectName', abbr: 'n', help: 'Project name'))
+    ..addCommand('fetch',
+        ArgParser()..addOption('projectName', abbr: 'n', help: 'Project name'))
 
     /// The `add` command allows the user to add a new package dependency.
     //
     // Option:
     /// - `package`: The name of the package to add.
-    ..addCommand('add', ArgParser()
-    ..addOption('projectName', abbr: 'a', help: 'Project name')
-    ..addOption('package', abbr: 'p', help: 'Package name'))
+    ..addCommand(
+        'add',
+        ArgParser()
+          ..addOption('projectName', abbr: 'a', help: 'Project name')
+          ..addOption('package', abbr: 'p', help: 'Package name'))
 
-    ..addFlag('help', abbr: 'h', negatable: false, help: 'Show this help message');
+    /// The `run` command allows the user to run `flutter run -d chrome`.
+    ..addCommand('run', ArgParser())
+    ..addFlag('help',
+        abbr: 'h', negatable: false, help: 'Show this help message');
 
   final ArgResults argResults = parser.parse(arguments);
 
@@ -60,7 +67,11 @@ void main(List<String> arguments) async {
     final String? user = argResults.command?['user'];
     final String? password = argResults.command?['password'];
 
-    if (projectName != null && host != null && oydaBase != null && user != null && password != null) {
+    if (projectName != null &&
+        host != null &&
+        oydaBase != null &&
+        user != null &&
+        password != null) {
       await createProject(projectName, host, port, oydaBase, user, password);
     } else {
       print(
@@ -70,7 +81,11 @@ void main(List<String> arguments) async {
     // Handle `fetch` command
   } else if (argResults.command?.name == 'fetch') {
     final String? projectName = argResults.command?['projectName'];
-    await fetchDependencies(projectName);
+    if (projectName != null) {
+      await fetchDependencies(projectName);
+    } else {
+      print('Project name is required. Use --projectName <project_name>.');
+    }
 
     // Handle `add` command
   } else if (argResults.command?.name == 'add') {
@@ -79,22 +94,31 @@ void main(List<String> arguments) async {
     if (package != null && projectName != null) {
       await addDependency(projectName, package);
     } else {
-      print('Project name and package name are required. Use --projectName <project_name>, --package <package_name>.');
+      print(
+          'Project name and package name are required. Use --projectName <project_name>, --package <package_name>.');
     }
 
     // Default usage message
+  }
+  // Handle `run` command
+  else if (argResults.command?.name == 'run') {
+    runProject(argResults.command?['projectName']);
   } else {
     print('');
-    print('The OYDA CLI helps you create and manage your OYDA projects with ease.');
+    print(
+        'The OYDA CLI helps you create and manage your OYDA projects with ease.');
     print('');
     print('Usage:');
-    print('  oydacli create --name <project_name> --host <host> --port <port> --oydaBase <database_name> --user <username> --password <password>');
-    print('    Create a new OYDA project with the specified name and database connection details.');
+    print(
+        '  oydacli create --name <project_name> --host <host> --port <port> --oydaBase <database_name> --user <username> --password <password>');
+    print(
+        '    Create a new OYDA project with the specified name and database connection details.');
     print('');
     print('  oydacli fetch');
     print('    Fetch the dependencies for the current OYDA project.');
     print('');
-    print('  oydacli add -- projectName <project_name> --package <package_name>');
+    print(
+        '  oydacli add -- projectName <project_name> --package <package_name>');
     print('    Add a new package dependency to the current OYDA project.');
     print('');
     print('Options:');

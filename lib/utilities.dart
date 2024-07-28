@@ -14,8 +14,10 @@ import 'package:yaml_magic/yaml_magic.dart';
 /// Otherwise, it prints the error message from the response body and returns false.
 ///
 /// If an error occurs during the request, it prints the error message and returns false.
-Future<Map<String, dynamic>> setOydabase(String host, int port, String oydaBase, String user, String password) async {
-  final url = Uri.parse('https://oydabackend.azurewebsites.net/api/set_oydabase');
+Future<Map<String, dynamic>> setOydabase(String host, int port, String oydaBase,
+    String user, String password) async {
+  final url =
+      Uri.parse('https://oydabackend.azurewebsites.net/api/set_oydabase');
   final Map<String, dynamic> requestBody = {
     'host': host,
     'port': port,
@@ -106,12 +108,17 @@ Future<List<String>> getDependencies(String? projectName) async {
 
   print('Getting dependencies from $host:$port/$oydaBase');
 
-  if (host == null || port == null || oydaBase == null || user == null || password == null) {
+  if (host == null ||
+      port == null ||
+      oydaBase == null ||
+      user == null ||
+      password == null) {
     print('Error: Missing required connection parameters.');
     return [];
   }
 
-  final url = Uri.parse('https://oydabackend.azurewebsites.net/api/get_dependencies');
+  final url =
+      Uri.parse('https://oydabackend.azurewebsites.net/api/get_dependencies');
   final Map<String, dynamic> requestBody = {
     'host': host,
     'port': port,
@@ -158,11 +165,16 @@ Future<void> addDependency(String projectName, String packageName) async {
   String? user = env['USER'];
   String? password = env['PASSWORD'];
 
-  if (host == null || port == null || oydaBase == null || user == null || password == null) {
+  if (host == null ||
+      port == null ||
+      oydaBase == null ||
+      user == null ||
+      password == null) {
     print('Error: Missing required connection parameters.');
     return;
   }
-  final url = Uri.parse('https://oydabackend.azurewebsites.net/api/add_dependency');
+  final url =
+      Uri.parse('https://oydabackend.azurewebsites.net/api/add_dependency');
   final Map<String, dynamic> requestBody = {
     'host': host,
     'port': port,
@@ -223,5 +235,16 @@ void setPubspecReadOnly(String projectName, String pubspec) {
     print('pubspec.yaml now read-only.');
   } else {
     print('Failed to make pubspec.yaml read-only.');
+  }
+}
+
+void runProject(String projectName) {
+  final result = Process.runSync('flutter', ['run', '-d', 'chrome'],
+      workingDirectory: projectName);
+
+  if (result.exitCode == 0) {
+    print('Welcome to your OYDACLI project!');
+  } else {
+    print('Failed to run project: ${result.stderr}');
   }
 }
