@@ -55,3 +55,7 @@
 ## 2.0.7
 
 -   feat: oydacli fix
+
+## 2.0.8
+
+-   feat: improve messaging for project creation
