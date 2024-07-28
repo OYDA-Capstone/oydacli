@@ -50,7 +50,7 @@ Future<void> createProject(String projectName, String host, int port,
   await fetchDependencies(projectName);
   print('Project $projectName created successfully.');
   print(
-      'To run the project: \n 1. Navigate to the project directory: cd $projectName \n 2. Run the project: oydacli run');
+      'To start the project, run the following command:  \noydacli run --projectName $projectName');
 }
 
 void createDirectory(String path) {
