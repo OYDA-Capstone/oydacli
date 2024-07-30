@@ -67,3 +67,7 @@
 ## 2.1.0
 
 -   feat: update main with default image
+
+## 2.1.1
+
+-   feat: update main with default image
