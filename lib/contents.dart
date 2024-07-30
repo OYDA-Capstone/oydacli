@@ -13,17 +13,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Welcome to OYDACLI'),
-        ),
-        body: Center(
-          child: Text('Built with love by O2🖤'),
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'assets/background.png',
+              fit: BoxFit.cover,
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
 ''';
 
 /// Returns the widget test content as a string for the given project name.
@@ -73,6 +75,7 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+    - assets/background.png
 ''';
 
 /// Returns the .env file content as a string for the given host, port, OYDA base, user, and password.

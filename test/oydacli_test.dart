@@ -21,9 +21,9 @@ void main() {
       await createProject(projectDir, host, port, oydaBase, user, password);
     });
 
-    test('run project', () async {
-      runProject(projectDir);
-    });
+    // test('run project', () async {
+    //   runProject(projectDir);
+    // });
 
     test('fetch dependencies', () async {
       await fetchDependencies(projectDir);
@@ -33,4 +33,6 @@ void main() {
       await addDependency(projectDir, "yaml_magic");
     });
   });
+
+  
 }

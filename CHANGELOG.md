@@ -63,3 +63,7 @@
 ## 2.0.9
 
 -   feat: update project README
+
+## 2.1.0
+
+-   feat: update main with default image
