@@ -46,7 +46,6 @@ Future<void> createProject(String projectName, String host, int port,
   createDependenciesFile(projectName);
   createPubspecFile(projectName);
   createTableConfigFile(projectName);
-  copyDefaultImage(projectName);
   createGitignoreFile(projectName);
   await addDefaultDependencies(projectName);
   await fetchDependencies(projectName);
@@ -114,20 +113,6 @@ void createTableConfigFile(String projectName) {
 
 void createGitignoreFile(String projectName) {
   createFile('$projectName/.gitignore', gitignoreContent());
-}
-
-void copyDefaultImage(String projectName) {
-  final imageSource = path.join('assets', 'background.png');
-  final imageDestination = path.join(projectName, 'assets', 'background.png');
-
-  Directory(path.join(projectName, 'assets')).createSync(recursive: true);
-
-  final imageFile = File(imageSource);
-  if (imageFile.existsSync()) {
-    imageFile.copySync(imageDestination);
-  } else {
-    print('Default image not found');
-  }
 }
 
 Future<void> addDefaultDependencies(String projectName) async {

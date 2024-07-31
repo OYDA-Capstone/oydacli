@@ -75,3 +75,7 @@
 ## 2.1.2
 
 -   feat: replace background image with just code
+
+## 2.1.2
+
+-   bugs: remove default image function
