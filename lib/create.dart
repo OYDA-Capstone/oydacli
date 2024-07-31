@@ -116,11 +116,6 @@ void createGitignoreFile(String projectName) {
   createFile('$projectName/.gitignore', gitignoreContent());
 }
 
-// void createBackgroundFIle(String projectName) {
-//   createDirectory('$projectName/assets');
-//   createFile('assets/background.jpg', backgroundContent());
-// }
-
 void copyDefaultImage(String projectName) {
   final imageSource = path.join('assets', 'background.png');
   final imageDestination = path.join(projectName, 'assets', 'background.png');

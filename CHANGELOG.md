@@ -71,3 +71,7 @@
 ## 2.1.1
 
 -   feat: update main with default image
+
+## 2.1.2
+
+-   feat: replace background image with just code
